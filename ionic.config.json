@@ -1,0 +1,7 @@
+{
+  "name": "2Ride1",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "angular-standalone"
+}

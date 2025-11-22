@@ -5,87 +5,101 @@
         <ion-icon slot="icon-only" name="arrow-back"></ion-icon>
       </ion-button>
     </ion-buttons>
-    <ion-title>
-      Mantenimientos
-    </ion-title>
+    <ion-title>Mantenimientos</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content class="ion-padding">
 
-  <ion-card *ngIf="moto">
-    <ion-card-header>
-      <ion-card-title>{{ moto.marca }} {{ moto.modelo }}</ion-card-title>
-      <ion-card-subtitle>
-        Año {{ moto.anio }} · Km inicial: {{ moto.kmInicial | number:'1.0-0' }}
-      </ion-card-subtitle>
-    </ion-card-header>
-  </ion-card>
+  <div *ngIf="moto" class="moto-resumen">
+    <h2>{{ moto.marca }} {{ moto.modelo }}</h2>
+    <p>Año {{ moto.anio }} · Km inicial: {{ moto.kmInicial | number:'1.0-0' }}</p>
+  </div>
 
   <!-- Lista de mantenimientos -->
-  <ion-list *ngIf="lista.length > 0">
-    <ion-item *ngFor="let m of lista">
-      <ion-label>
-        <h2>{{ m.tipo }}</h2>
-        <p>Fecha: {{ m.fecha }} · Km: {{ m.km | number:'1.0-0' }}</p>
-        <p *ngIf="m.costo">Costo: {{ m.costo | currency:'CLP' }}</p>
-        <p *ngIf="m.notas">{{ m.notas }}</p>
-      </ion-label>
-      <ion-button fill="clear" color="danger" slot="end" (click)="onEliminar(m)">
-        Eliminar
-      </ion-button>
-    </ion-item>
-  </ion-list>
+  <div *ngIf="lista.length > 0; else sinMantenimientos">
+    <div *ngFor="let m of lista" class="mant-item">
+      <h3>{{ m.tipo }}</h3>
+      <p>Fecha: {{ m.fecha }} · Km: {{ m.km | number:'1.0-0' }}</p>
+      <p *ngIf="m.costo">Costo: {{ m.costo | currency:'CLP' }}</p>
+      <p *ngIf="m.notas">{{ m.notas }}</p>
+      <p *ngIf="m.sellado">
+        ✅ Sellado por: {{ m.selladoPor }}
+      </p>
+      <button type="button" (click)="onEliminar(m)">Eliminar</button>
+    </div>
+  </div>
 
-  <ion-item *ngIf="lista.length === 0">
-    <ion-label color="medium">
-      No hay mantenimientos registrados para esta motocicleta.
-    </ion-label>
-  </ion-item>
+  <ng-template #sinMantenimientos>
+    <p class="empty">No hay mantenimientos registrados para esta motocicleta.</p>
+  </ng-template>
 
   <!-- Formulario para agregar mantenimiento -->
-  <ion-card class="form-card">
-    <ion-card-header>
-      <ion-card-title>Registrar mantenimiento</ion-card-title>
-    </ion-card-header>
+  <div class="form-card">
+    <h3>Registrar mantenimiento</h3>
 
-    <ion-card-content>
-      <form (ngSubmit)="onAgregar()">
+    <form (ngSubmit)="onAgregar()">
 
-        <ion-item>
-          <ion-label position="floating">Tipo de servicio</ion-label>
-          <ion-select [(ngModel)]="form.tipo" name="tipo">
-            <ion-select-option *ngFor="let t of tiposServicios" [value]="t">
-              {{ t }}
-            </ion-select-option>
-          </ion-select>
-        </ion-item>
+      <div class="form-group">
+        <label for="tipo">Tipo de servicio</label>
+        <select
+          id="tipo"
+          name="tipo"
+          [(ngModel)]="form.tipo"
+          required
+        >
+          <option *ngFor="let t of tiposServicios" [ngValue]="t">
+            {{ t }}
+          </option>
+        </select>
+      </div>
 
-        <ion-item>
-          <ion-label position="floating">Fecha</ion-label>
-          <ion-input type="date" [(ngModel)]="form.fecha" name="fecha"></ion-input>
-        </ion-item>
+      <div class="form-group">
+        <label for="fecha">Fecha</label>
+        <input
+          id="fecha"
+          type="date"
+          name="fecha"
+          [(ngModel)]="form.fecha"
+          required
+        />
+      </div>
 
-        <ion-item>
-          <ion-label position="floating">Kilometraje (km)</ion-label>
-          <ion-input type="number" [(ngModel)]="form.km" name="km"></ion-input>
-        </ion-item>
+      <div class="form-group">
+        <label for="km">Kilometraje (km)</label>
+        <input
+          id="km"
+          type="number"
+          name="km"
+          [(ngModel)]="form.km"
+          required
+        />
+      </div>
 
-        <ion-item>
-          <ion-label position="floating">Costo (CLP)</ion-label>
-          <ion-input type="number" [(ngModel)]="form.costo" name="costo"></ion-input>
-        </ion-item>
+      <div class="form-group">
+        <label for="costo">Costo (CLP)</label>
+        <input
+          id="costo"
+          type="number"
+          name="costo"
+          [(ngModel)]="form.costo"
+        />
+      </div>
 
-        <ion-item>
-          <ion-label position="floating">Notas</ion-label>
-          <ion-textarea autoGrow="true" [(ngModel)]="form.notas" name="notas"></ion-textarea>
-        </ion-item>
+      <div class="form-group">
+        <label for="notas">Notas</label>
+        <textarea
+          id="notas"
+          name="notas"
+          [(ngModel)]="form.notas"
+          rows="3"
+        ></textarea>
+      </div>
 
-        <ion-button expand="block" type="submit" class="ion-margin-top">
-          Guardar mantenimiento
-        </ion-button>
-      </form>
-    </ion-card-content>
-  </ion-card>
+      <button type="submit" class="btn-primary">
+        Guardar mantenimiento
+      </button>
+    </form>
+  </div>
 
 </ion-content>

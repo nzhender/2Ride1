@@ -97,8 +97,8 @@ export class Tab3Page implements OnInit {
     return `${m.marca} ${m.modelo}`;
   }
 
-  onToggleActivo(rec: Recordatorio, event: any) {
-    this.recService.cambiarEstado(rec.id, event.detail.checked);
+  onToggleActivo(rec: Recordatorio, checked: boolean) {
+    this.recService.cambiarEstado(rec.id, checked);
     this.cargar();
   }
 

@@ -1,17 +1,97 @@
-<ion-header [translucent]="true">
+<ion-header>
   <ion-toolbar>
-    <ion-title>
-      Tab 2
-    </ion-title>
+    <ion-title>Mis motocicletas</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="logout()">
+        <ion-icon name="log-out-outline" slot="start"></ion-icon>
+        Cerrar sesión
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Tab 2</ion-title>
-    </ion-toolbar>
-  </ion-header>
 
-  <app-explore-container name="Tab 2 page"></app-explore-container>
+<ion-content class="ion-padding">
+
+  <!-- Lista de motos -->
+  <ion-card *ngFor="let moto of motos" class="moto-card">
+    <ion-card-header>
+      <ion-card-title>{{ moto.marca }} {{ moto.modelo }}</ion-card-title>
+      <ion-card-subtitle>
+        Año {{ moto.anio }} · Km inicial: {{ moto.kmInicial | number:'1.0-0' }}
+      </ion-card-subtitle>
+    </ion-card-header>
+
+    <ion-card-content>
+      <div class="acciones">
+        <ion-button size="small" (click)="onVerMantenimientos(moto)">
+          Mantenimientos
+        </ion-button>
+        <ion-button size="small" color="danger" fill="outline" (click)="onEliminarMoto(moto)">
+          Eliminar
+        </ion-button>
+      </div>
+    </ion-card-content>
+  </ion-card>
+
+  <ion-item *ngIf="motos.length === 0">
+    <ion-label color="medium">
+      No tienes motocicletas registradas aún.
+    </ion-label>
+  </ion-item>
+
+  <!-- Formulario para agregar moto -->
+  <ion-card class="form-card">
+    <ion-card-header>
+      <ion-card-title>Registrar nueva motocicleta</ion-card-title>
+    </ion-card-header>
+
+    <ion-card-content>
+      <form (ngSubmit)="onAgregarMoto()">
+
+        <ion-item>
+          <ion-label position="floating">Marca</ion-label>
+          <ion-input
+            [(ngModel)]="formMoto.marca"
+            name="marca"
+            required>
+          </ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-label position="floating">Modelo</ion-label>
+          <ion-input
+            [(ngModel)]="formMoto.modelo"
+            name="modelo"
+            required>
+          </ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-label position="floating">Año</ion-label>
+          <ion-input
+            type="number"
+            [(ngModel)]="formMoto.anio"
+            name="anio"
+            required>
+          </ion-input>
+        </ion-item>
+
+        <ion-item>
+          <ion-label position="floating">Kilometraje inicial (km)</ion-label>
+          <ion-input
+            type="number"
+            [(ngModel)]="formMoto.kmInicial"
+            name="kmInicial"
+            required>
+          </ion-input>
+        </ion-item>
+
+        <ion-button expand="block" type="submit" class="ion-margin-top">
+          Guardar motocicleta
+        </ion-button>
+      </form>
+    </ion-card-content>
+  </ion-card>
+
 </ion-content>

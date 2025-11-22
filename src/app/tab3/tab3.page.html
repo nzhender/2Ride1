@@ -1,17 +1,95 @@
-<ion-header [translucent]="true">
+<ion-header>
   <ion-toolbar>
-    <ion-title>
-      Tab 3
-    </ion-title>
+    <ion-title>Recordatorios</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Tab 3</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content class="ion-padding">
 
-  <app-explore-container name="Tab 3 page"></app-explore-container>
+  <!-- Lista de recordatorios existentes -->
+  <ion-list *ngIf="recordatorios.length > 0">
+    <ion-item *ngFor="let r of recordatorios">
+      <ion-label>
+        <h2>{{ r.tipoServicio }}</h2>
+        <p>Moto: {{ nombreMoto(r.motoId) }}</p>
+        <p *ngIf="r.tipoRecordatorio === 'fecha'">
+          Recordar el {{ r.fechaObjetivo }}
+        </p>
+        <p *ngIf="r.tipoRecordatorio === 'km'">
+          Recordar a los {{ r.kmObjetivo | number:'1.0-0' }} km
+        </p>
+      </ion-label>
+      <ion-toggle
+        slot="end"
+        [checked]="r.activo"
+        (ionChange)="onToggleActivo(r, $event)">
+      </ion-toggle>
+      <ion-button slot="end" fill="clear" color="danger" (click)="onEliminar(r)">
+        Eliminar
+      </ion-button>
+    </ion-item>
+  </ion-list>
+
+  <ion-item *ngIf="recordatorios.length === 0">
+    <ion-label color="medium">
+      No tienes recordatorios registrados aún.
+    </ion-label>
+  </ion-item>
+
+  <!-- Formulario para crear un nuevo recordatorio -->
+  <ion-card class="form-card">
+    <ion-card-header>
+      <ion-card-title>Crear recordatorio</ion-card-title>
+    </ion-card-header>
+
+    <ion-card-content>
+      <form (ngSubmit)="onAgregar()">
+
+        <ion-item>
+          <ion-label position="floating">Motocicleta</ion-label>
+          <ion-select [(ngModel)]="form.motoId" name="motoId">
+            <ion-select-option *ngFor="let m of motos" [value]="m.id">
+              {{ m.marca }} {{ m.modelo }}
+            </ion-select-option>
+          </ion-select>
+        </ion-item>
+
+        <ion-item>
+          <ion-label position="floating">Tipo de servicio</ion-label>
+          <ion-select [(ngModel)]="form.tipoServicio" name="tipoServicio">
+            <ion-select-option *ngFor="let t of tiposServicios" [value]="t">
+              {{ t }}
+            </ion-select-option>
+          </ion-select>
+        </ion-item>
+
+        <ion-item>
+          <ion-label>Recordar por</ion-label>
+          <ion-segment [(ngModel)]="form.tipoRecordatorio" name="tipoRecordatorio">
+            <ion-segment-button value="fecha">
+              <ion-label>Fecha</ion-label>
+            </ion-segment-button>
+            <ion-segment-button value="km">
+              <ion-label>Kilometraje</ion-label>
+            </ion-segment-button>
+          </ion-segment>
+        </ion-item>
+
+        <ion-item *ngIf="form.tipoRecordatorio === 'fecha'">
+          <ion-label position="floating">Fecha objetivo</ion-label>
+          <ion-input type="date" [(ngModel)]="form.fechaObjetivo" name="fechaObjetivo"></ion-input>
+        </ion-item>
+
+        <ion-item *ngIf="form.tipoRecordatorio === 'km'">
+          <ion-label position="floating">Kilometraje objetivo (km)</ion-label>
+          <ion-input type="number" [(ngModel)]="form.kmObjetivo" name="kmObjetivo"></ion-input>
+        </ion-item>
+
+        <ion-button expand="block" type="submit" class="ion-margin-top">
+          Guardar recordatorio
+        </ion-button>
+      </form>
+    </ion-card-content>
+  </ion-card>
+
 </ion-content>

@@ -1,0 +1,59 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>2Ride - Registro</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="ion-padding">
+
+  <form (ngSubmit)="onRegister()">
+    <ion-item>
+      <ion-label position="floating">Nombre</ion-label>
+      <ion-input
+        [(ngModel)]="nombre"
+        name="nombre"
+        required>
+      </ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="floating">Correo electrónico</ion-label>
+      <ion-input
+        type="email"
+        [(ngModel)]="correo"
+        name="correo"
+        required>
+      </ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label position="floating">Contraseña</ion-label>
+      <ion-input
+        type="password"
+        [(ngModel)]="password"
+        name="password"
+        required>
+      </ion-input>
+    </ion-item>
+
+    <ion-item>
+      <ion-label>Tipo de usuario</ion-label>
+      <ion-select [(ngModel)]="tipo" name="tipo">
+        <ion-select-option value="motociclista">Motociclista</ion-select-option>
+        <ion-select-option value="taller">Taller</ion-select-option>
+      </ion-select>
+    </ion-item>
+
+    <ion-button expand="block" type="submit" class="ion-margin-top">
+      Crear cuenta
+    </ion-button>
+  </form>
+
+  <div class="registro-link">
+    <p>¿Ya tienes cuenta?</p>
+    <ion-button fill="clear" size="small" (click)="irALogin()">
+      Iniciar sesión
+    </ion-button>
+  </div>
+
+</ion-content>

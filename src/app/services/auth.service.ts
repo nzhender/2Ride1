@@ -12,6 +12,28 @@ export class AuthService {
 
   constructor() {
     this.cargarUsuarios();
+
+    // 🔹 SEMILLA DE USUARIOS DEMO (solo si aún no hay usuarios)
+    if (this.usuarios.length === 0) {
+      const demoMoto: Usuario = {
+        id: this.generarId(),
+        nombre: 'Demo Motociclista',
+        correo: 'demo.moto@2ride.cl',
+        password: 'Demo123',
+        tipo: 'motociclista'
+      };
+
+      const demoTaller: Usuario = {
+        id: this.generarId(),
+        nombre: 'Demo Taller',
+        correo: 'demo.taller@2ride.cl',
+        password: 'Demo123',
+        tipo: 'taller'
+      };
+
+      this.usuarios.push(demoMoto, demoTaller);
+      this.guardarUsuarios();
+    }
   }
 
   private cargarUsuarios() {
@@ -40,10 +62,17 @@ export class AuthService {
     this.guardarSesion(null);
   }
 
-  registrar(nombre: string, correo: string, password: string, tipo: 'motociclista' | 'taller'): Usuario | null {
+  registrar(
+    nombre: string,
+    correo: string,
+    password: string,
+    tipo: 'motociclista' | 'taller'
+  ): Usuario | null {
     this.cargarUsuarios();
 
-    const existe = this.usuarios.find(u => u.correo.toLowerCase() === correo.toLowerCase());
+    const existe = this.usuarios.find(
+      u => u.correo.toLowerCase() === correo.toLowerCase()
+    );
     if (existe) {
       return null; // ya existe usuario con ese correo
     }
@@ -66,9 +95,10 @@ export class AuthService {
   login(correo: string, password: string): Usuario | null {
     this.cargarUsuarios();
 
-    const usuario = this.usuarios.find(u =>
-      u.correo.toLowerCase() === correo.toLowerCase() &&
-      u.password === password
+    const usuario = this.usuarios.find(
+      u =>
+        u.correo.toLowerCase() === correo.toLowerCase() &&
+        u.password === password
     );
 
     if (!usuario) {
@@ -83,6 +113,10 @@ export class AuthService {
     if ((crypto as any)?.randomUUID) {
       return (crypto as any).randomUUID();
     }
-    return Date.now().toString(36) + Math.random().toString(36).substring(2, 9);
+    return (
+      Date.now().toString(36) +
+      Math.random().toString(36).substring(2, 9)
+    );
   }
 }
+

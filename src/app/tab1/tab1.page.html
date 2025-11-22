@@ -8,46 +8,66 @@
 
 <ion-content class="ion-padding">
 
-  <!-- Vista para TALLER: lista de mantenimientos pendientes de sellar -->
+  <!-- VISTA TALLER -->
   <ng-container *ngIf="esTaller; else vistaMotociclista">
-    <ion-card>
-      <ion-card-header>
-        <ion-card-title>Mantenimientos pendientes de validación</ion-card-title>
-        <ion-card-subtitle>Sellado por taller</ion-card-subtitle>
-      </ion-card-header>
 
-      <ion-list *ngIf="pendientes.length > 0">
-        <ion-item *ngFor="let p of pendientes">
-          <ion-label>
-            <h2>{{ p.tipo }}</h2>
-            <p>Fecha: {{ p.fecha }} · Km: {{ p.km | number:'1.0-0' }}</p>
-            <p *ngIf="p.notas">Notas: {{ p.notas }}</p>
-          </ion-label>
-          <ion-button slot="end" (click)="sellar(p)">
-            Sellar
-          </ion-button>
-        </ion-item>
-      </ion-list>
+    <div class="panel-header">
+      <h1>Bienvenido, {{ usuario?.nombre }}</h1>
+      <p class="subtitle">
+        Mantenimientos pendientes de validación (sellado).
+      </p>
+    </div>
 
-      <ion-item *ngIf="pendientes.length === 0">
-        <ion-label color="medium">No hay mantenimientos pendientes.</ion-label>
-      </ion-item>
-    </ion-card>
+    <div *ngIf="pendientes.length > 0; else sinPendientes">
+      <div *ngFor="let p of pendientes" class="card-item">
+        <h2>{{ p.tipo }}</h2>
+        <p>Fecha: {{ p.fecha }} · Km: {{ p.km | number:'1.0-0' }}</p>
+        <p *ngIf="p.notas">Notas: {{ p.notas }}</p>
+
+        <button type="button" class="btn-primary" (click)="sellar(p)">
+          Sellar mantenimiento
+        </button>
+      </div>
+    </div>
+
+    <ng-template #sinPendientes>
+      <p class="empty">
+        No hay mantenimientos pendientes de validación.
+      </p>
+    </ng-template>
+
   </ng-container>
 
-  <!-- Vista para MOTOCICLISTA: resumen simple -->
+  <!-- VISTA MOTOCICLISTA -->
   <ng-template #vistaMotociclista>
-    <ion-card>
-      <ion-card-header>
-        <ion-card-title>Resumen</ion-card-title>
-        <ion-card-subtitle>Hola {{ usuario?.nombre }}</ion-card-subtitle>
-      </ion-card-header>
-      <ion-card-content>
-        <p>Motos registradas: <b>{{ motos.length }}</b></p>
-        <p>Mantenimientos totales: <b>{{ totalMantenimientos }}</b></p>
-        <p>Recordatorios creados: <b>{{ totalRecordatorios }}</b></p>
-      </ion-card-content>
-    </ion-card>
+    <div class="panel-header">
+      <h1>Hola, {{ usuario?.nombre }}</h1>
+      <p class="subtitle">
+        Resumen general de tu actividad en 2Ride.
+      </p>
+    </div>
+
+    <div class="resumen-grid">
+      <div class="resumen-card">
+        <h3>Motos registradas</h3>
+        <p class="resumen-valor">{{ motos.length }}</p>
+      </div>
+
+      <div class="resumen-card">
+        <h3>Mantenimientos</h3>
+        <p class="resumen-valor">{{ totalMantenimientos }}</p>
+      </div>
+
+      <div class="resumen-card">
+        <h3>Recordatorios</h3>
+        <p class="resumen-valor">{{ totalRecordatorios }}</p>
+      </div>
+    </div>
+
+    <p class="nota">
+      Puedes gestionar tus motocicletas y mantenimientos desde las pestañas
+      <strong>Motos</strong> y <strong>Recordatorios</strong> en la parte inferior.
+    </p>
   </ng-template>
 
 </ion-content>

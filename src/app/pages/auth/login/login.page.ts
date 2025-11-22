@@ -15,7 +15,7 @@ import { AuthService } from 'src/app/services/auth.service';
 })
 export class LoginPage {
 
-  correo = '';
+  email = '';
   password = '';
 
   constructor(
@@ -24,12 +24,12 @@ export class LoginPage {
   ) {}
 
   onLogin() {
-    if (!this.correo || !this.password) {
+    if (!this.email || !this.password) {
       alert('Por favor ingresa tu correo y contraseña.');
       return;
     }
 
-    const usuario = this.authService.login(this.correo, this.password);
+    const usuario = this.authService.login(this.email, this.password);
 
     if (!usuario) {
       alert('Correo o contraseña incorrectos.');

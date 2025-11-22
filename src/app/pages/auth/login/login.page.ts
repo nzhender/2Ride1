@@ -15,8 +15,8 @@ import { AuthService } from 'src/app/services/auth.service';
 })
 export class LoginPage {
 
-  email = '';
-  password = '';
+  email: string = '';
+  password: string = '';
 
   constructor(
     private authService: AuthService,
@@ -36,11 +36,11 @@ export class LoginPage {
       return;
     }
 
-    // Redirigir a las tabs (panel principal)
-    this.router.navigateByUrl('/tabs/tab2', { replaceUrl: true });
+    // Si el login es correcto, redirigir al panel principal
+    this.router.navigateByUrl('/tabs/tab1', { replaceUrl: true });
   }
 
-  irARegistro() {
-    this.router.navigateByUrl('/register');
+  goToRegister() {
+    this.router.navigate(['/register']);
   }
 }

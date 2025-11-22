@@ -15,9 +15,9 @@ import { AuthService } from 'src/app/services/auth.service';
 })
 export class RegisterPage {
 
-  nombre = '';
-  correo = '';
-  password = '';
+  nombre: string = '';
+  email: string = '';
+  password: string = '';
   tipo: 'motociclista' | 'taller' = 'motociclista';
 
   constructor(
@@ -26,28 +26,28 @@ export class RegisterPage {
   ) {}
 
   onRegister() {
-    if (!this.nombre || !this.correo || !this.password) {
-      alert('Completa todos los campos.');
+    if (!this.nombre || !this.email || !this.password || !this.tipo) {
+      alert('Por favor completa todos los campos.');
       return;
     }
 
-    const usuario = this.authService.registrar(
+    const ok = this.authService.registrar(
       this.nombre,
-      this.correo,
+      this.email,
       this.password,
       this.tipo
     );
 
-    if (!usuario) {
+    if (!ok) {
       alert('Ya existe un usuario registrado con ese correo.');
       return;
     }
 
-    alert('Registro exitoso. Sesión iniciada.');
-    this.router.navigateByUrl('/tabs', { replaceUrl: true });
+    alert('Cuenta creada correctamente. Ahora puedes iniciar sesión.');
+    this.router.navigate(['/login']);
   }
 
-  irALogin() {
-    this.router.navigateByUrl('/login');
+  goToLogin() {
+    this.router.navigate(['/login']);
   }
 }

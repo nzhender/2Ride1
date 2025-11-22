@@ -1,59 +1,76 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>2Ride - Registro</ion-title>
+    <ion-title>2Ride - Crear cuenta</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content class="ion-padding">
 
-  <form (ngSubmit)="onRegister()">
-    <ion-item>
-      <ion-label position="floating">Nombre</ion-label>
-      <ion-input
-        [(ngModel)]="nombre"
-        name="nombre"
-        required>
-      </ion-input>
-    </ion-item>
+  <div class="register-wrapper">
 
-    <ion-item>
-      <ion-label position="floating">Correo electrónico</ion-label>
-      <ion-input
-        type="email"
-        [(ngModel)]="correo"
-        name="correo"
-        required>
-      </ion-input>
-    </ion-item>
+    <h1 class="app-title">Crear cuenta</h1>
+    <p class="app-subtitle">Registra tus datos para usar 2Ride</p>
 
-    <ion-item>
-      <ion-label position="floating">Contraseña</ion-label>
-      <ion-input
-        type="password"
-        [(ngModel)]="password"
-        name="password"
-        required>
-      </ion-input>
-    </ion-item>
+    <form (ngSubmit)="onRegister()">
 
-    <ion-item>
-      <ion-label>Tipo de usuario</ion-label>
-      <ion-select [(ngModel)]="tipo" name="tipo">
-        <ion-select-option value="motociclista">Motociclista</ion-select-option>
-        <ion-select-option value="taller">Taller</ion-select-option>
-      </ion-select>
-    </ion-item>
+      <div class="form-group">
+        <label for="nombre">Nombre completo</label>
+        <input
+          id="nombre"
+          type="text"
+          name="nombre"
+          [(ngModel)]="nombre"
+          required
+        />
+      </div>
 
-    <ion-button expand="block" type="submit" class="ion-margin-top">
-      Crear cuenta
-    </ion-button>
-  </form>
+      <div class="form-group">
+        <label for="email">Correo electrónico</label>
+        <input
+          id="email"
+          type="email"
+          name="email"
+          [(ngModel)]="email"
+          required
+        />
+      </div>
 
-  <div class="registro-link">
-    <p>¿Ya tienes cuenta?</p>
-    <ion-button fill="clear" size="small" (click)="irALogin()">
-      Iniciar sesión
-    </ion-button>
+      <div class="form-group">
+        <label for="password">Contraseña</label>
+        <input
+          id="password"
+          type="password"
+          name="password"
+          [(ngModel)]="password"
+          required
+        />
+      </div>
+
+      <div class="form-group">
+        <label for="tipo">Tipo de usuario</label>
+        <select
+          id="tipo"
+          name="tipo"
+          [(ngModel)]="tipo"
+          required
+        >
+          <option [ngValue]="'motociclista'">Motociclista</option>
+          <option [ngValue]="'taller'">Taller</option>
+        </select>
+      </div>
+
+      <button type="submit" class="btn-primary">
+        Crear cuenta
+      </button>
+    </form>
+
+    <div class="login-link">
+      <p>¿Ya tienes cuenta?</p>
+      <button class="btn-link" (click)="goToLogin()">
+        Iniciar sesión
+      </button>
+    </div>
+
   </div>
 
 </ion-content>
